@@ -1,0 +1,9 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+    <ul style="list-style: none">
+    {% for r in records %}
+        <li>Temp: {{ r.temp }} | Fecha: {{ r.fetched }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
