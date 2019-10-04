@@ -12,7 +12,7 @@
 
 ### Arrancar celery
     
-    celery -A celery_worker.celery worker -P eventlet -l info
+    celery -A celery_worker.celery -l info
 
 ### Arrancar tareas programadas
     
@@ -20,4 +20,4 @@
 
 ### Arrancar rabbitmq
 
-    sudo rabbitmq-server &
+    sudo rabbitmq-server
