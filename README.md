@@ -1,4 +1,4 @@
-#Para ejecutar la app:
+# Para ejecutar la app:
 
 ### Crear las siguientes variables de entorno:
 
