@@ -9,7 +9,7 @@ FECHA DE CREACIÓN: 26/09/2019
 import logging
 from logging.handlers import SMTPHandler
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, render_template
 from flask_restful import Api
 
 from app.common import http_status
@@ -62,46 +62,17 @@ def create_app(settings_module):
 
 def register_error_handlers(app):
     """
-    Registers custom error handlers to return JSON responses
+    Registers custom error handlers
     :param app: app instance
     :return: error response as JSON
     """
 
     @app.errorhandler(Exception)
     def handle_exception_error(e):
-        return jsonify({'msg': 'Internal server error'}), http_status.HTTP_500_INTERNAL_SERVER_ERROR
-
-    @app.errorhandler(http_status.HTTP_500_INTERNAL_SERVER_ERROR)
-    def handle_500_error(e):
-        return jsonify({'msg': 'Internal server error'}), http_status.HTTP_500_INTERNAL_SERVER_ERROR
-
-    @app.errorhandler(http_status.HTTP_405_METHOD_NOT_ALLOWED)
-    def handle_405_error(e):
-        return jsonify({'msg': 'Method not allowed'}), http_status.HTTP_405_METHOD_NOT_ALLOWED
-
-    @app.errorhandler(http_status.HTTP_403_FORBIDDEN)
-    def handle_403_error(e):
-        return jsonify({'msg': 'Forbidden error'}), http_status.HTTP_403_FORBIDDEN
-
-    @app.errorhandler(http_status.HTTP_404_NOT_FOUND)
-    def handle_404_error(e):
-        return jsonify({'msg': 'Not Found error'}), http_status.HTTP_404_NOT_FOUND
-
-    @app.errorhandler(AppErrorBaseClass)
-    def handle_no_valid_params_error(e):
-        return jsonify({'msg': str(e)}), http_status.HTTP_500_INTERNAL_SERVER_ERROR
-
-    @app.errorhandler(NoValidParamsError)
-    def handle_no_valid_params_error(e):
-        return jsonify({'msg': str(e)}), http_status.HTTP_400_BAD_REQUEST
-
-    @app.errorhandler(ObjectNotFound)
-    def handle_object_not_found_error(e):
-        return jsonify({'msg': str(e)}), http_status.HTTP_404_NOT_FOUND
-
-    @app.errorhandler(MultipleObjectsFound)
-    def handle_no_valid_params_error(e):
-        return jsonify({'msg': str(e)}), http_status.HTTP_500_INTERNAL_SERVER_ERROR
+        if request.path.startswith('/api'):
+            return jsonify({'msg': str(e)}), http_status.HTTP_500_INTERNAL_SERVER_ERROR
+        else:
+            return render_template('error_500.html'), http_status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
 def configure_logging(app):

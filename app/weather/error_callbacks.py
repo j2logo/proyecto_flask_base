@@ -15,11 +15,11 @@ def weather_error_callback(error_string):
     if request.path.startswith('/api'):
         return jsonify({'msg': error_string}), http_status.HTTP_500_INTERNAL_SERVER_ERROR
     else:
-        return render_template('error_500.html')
+        return render_template('error_500.html'), http_status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
 def custom_error_callback(error_string):
     if request.path.startswith('/api'):
         return jsonify({'msg': error_string}), http_status.HTTP_400_BAD_REQUEST
     else:
-        return render_template('error_400.html')
+        return render_template('error_400.html'), http_status.HTTP_400_BAD_REQUEST

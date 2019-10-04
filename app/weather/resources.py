@@ -11,7 +11,7 @@ import logging
 from flask import Blueprint, jsonify, current_app
 from flask_restful import Api, Resource
 
-from app.weather.exceptions import CustomWeatherException
+from app.weather.exceptions import CustomWeatherException, NoTempsForTodayException
 from app.weather.helpers import average_temperature_of_today
 from app.weather.models import TempRecord
 from app.weather.schemas import TempRecordSchema
@@ -35,8 +35,11 @@ class TempListResource(Resource):
 
 class AvgTempResource(Resource):
     def get(self):
-        avg = average_temperature_of_today()
-        return jsonify({'avg': avg})
+        try:
+            avg = average_temperature_of_today()
+            return jsonify({'avg': avg})
+        except NoTempsForTodayException:
+            return jsonify({'error': 'No hay temperaturas'})
 
 
 class ErrorResource(Resource):

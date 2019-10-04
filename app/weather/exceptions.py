@@ -13,3 +13,7 @@ class WeatherException(Exception):
 
 class CustomWeatherException(WeatherException):
     pass
+
+
+class NoTempsForTodayException(WeatherException):
+    pass

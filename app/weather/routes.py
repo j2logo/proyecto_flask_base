@@ -10,7 +10,7 @@ import logging
 
 from flask import Blueprint, render_template
 
-from app.weather.exceptions import CustomWeatherException
+from app.weather.exceptions import CustomWeatherException, NoTempsForTodayException
 from app.weather.helpers import average_temperature_of_today
 from app.weather.models import TempRecord
 
@@ -30,9 +30,12 @@ def index():
 
 @weather_bp.route("/temp/today/avg", methods=['GET'])
 def average_temp():
-    avg = average_temperature_of_today()
     template_context = dict()
-    template_context['avg'] = avg
+    try:
+        avg = average_temperature_of_today()
+        template_context['avg'] = avg
+    except NoTempsForTodayException:
+        template_context['error'] = 'No hay temperaturas'
     template_context['title'] = 'Temperatura media de hoy - Flask PyConES19'
     return render_template("weather/average.html", **template_context)
 
