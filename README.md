@@ -12,7 +12,7 @@
 
 ### Arrancar celery
     
-    celery -A celery_worker.celery -l info
+    celery -A celery_worker.celery worker -l info
 
 ### Arrancar tareas programadas
     
